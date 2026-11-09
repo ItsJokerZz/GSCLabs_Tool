@@ -1,0 +1,316 @@
+﻿<Window x:Class="GSCLab.Views.AccountSettingsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Account Settings" Height="800" Width="680"
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <Style TargetType="ScrollBar">
+            <Setter Property="Background" Value="#111111"/>
+            <Setter Property="Width" Value="8"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Grid x:Name="Bg" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
+                            <Track x:Name="PART_Track" IsDirectionReversed="true">
+                                <Track.Thumb>
+                                    <Thumb x:Name="Thumb">
+                                        <Thumb.Template>
+                                            <ControlTemplate TargetType="Thumb">
+                                                <Border Background="#007ACC" CornerRadius="4" SnapsToDevicePixels="True"/>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="#008BE6"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Thumb.Template>
+                                    </Thumb>
+                                </Track.Thumb>
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="WinControlBtn" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#777"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" x:Name="border" CornerRadius="0,8,0,0">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter TargetName="border" Property="Background" Value="#222"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="WinCloseBtn" BasedOn="{StaticResource WinControlBtn}" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" x:Name="border" CornerRadius="0,8,0,0">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter TargetName="border" Property="Background" Value="#C42B1C"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="OutlineActionBtn" TargetType="Button">
+            <Setter Property="Background" Value="#111111"/>
+            <Setter Property="Foreground" Value="#007ACC"/>
+            <Setter Property="BorderBrush" Value="#222222"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="20,10"/>
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6">
+                            <ContentPresenter Margin="{TemplateBinding Padding}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="#007ACC"/>
+                                <Setter TargetName="border" Property="Background" Value="#181818"/>
+                                <Setter Property="Foreground" Value="#0086E6"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#007ACC"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="PremiumActionBtn" TargetType="Button">
+            <Setter Property="Background" Value="#007ACC"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" x:Name="border" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#0086E6"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#005C99"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="GhostActionBtn" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#007ACC"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="Transparent" CornerRadius="4" Padding="5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="#0086E6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SleekInput" TargetType="TextBox">
+            <Setter Property="Background" Value="#0C0C0C"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#222222"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="15,0"/>
+            <Setter Property="CaretBrush" Value="#007ACC"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6" x:Name="border">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="0"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="#007ACC"/>
+                                <Setter TargetName="border" Property="Background" Value="#111111"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SleekPassword" TargetType="PasswordBox">
+            <Setter Property="Background" Value="#0C0C0C"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#222222"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="15,0"/>
+            <Setter Property="CaretBrush" Value="#007ACC"/>
+            <Setter Property="PasswordChar" Value="●"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="PasswordBox">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6" x:Name="border">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="0"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="#007ACC"/>
+                                <Setter TargetName="border" Property="Background" Value="#111111"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="15">
+        <Border Background="#0C0C0C" CornerRadius="8" BorderBrush="#222222" BorderThickness="1">
+
+            <Border.Effect>
+                <DropShadowEffect Color="Black" BlurRadius="25" ShadowDepth="8" Opacity="0.6"/>
+            </Border.Effect>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="45"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0" Background="#111111" CornerRadius="8,8,0,0" BorderBrush="#1A1A1A" BorderThickness="0,0,0,1" MouseLeftButtonDown="DragBar_MouseDown">
+                    <Grid>
+                        <DockPanel Margin="15,0,0,0" VerticalAlignment="Center">
+                            <Ellipse Width="8" Height="8" Fill="#007ACC" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <TextBlock Text="ACCOUNT SETTINGS" Foreground="White" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"/>
+                        </DockPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button Content="✕" Style="{StaticResource WinCloseBtn}" Width="45" Name="CloseButton" Click="CloseButton_Click"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="35">
+                    <StackPanel>
+
+                        <TextBlock Text="IDENTITY &amp; APPEARANCE" Foreground="#007ACC" FontSize="11" FontWeight="Bold" Margin="0,0,0,12"/>
+                        <Border Background="#111111" BorderBrush="#1A1A1A" BorderThickness="1" CornerRadius="8" Padding="25" Margin="0,0,0,25">
+                            <StackPanel>
+                                <TextBlock Text="PROFILE ICON" Foreground="#666" FontSize="10" FontWeight="Bold" Margin="0,0,0,12"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,25">
+                                    <Border Width="70" Height="70" CornerRadius="35" Background="#0C0C0C" BorderBrush="#222" BorderThickness="1" Margin="0,0,20,0">
+                                        <Grid>
+                                            <TextBlock x:Name="TxtProfileEmoji" Text="👤" FontSize="35" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                            <Image x:Name="ImgProfileModal" Stretch="UniformToFill">
+                                                <Image.Clip>
+                                                    <EllipseGeometry Center="35,35" RadiusX="35" RadiusY="35"/>
+                                                </Image.Clip>
+                                            </Image>
+                                        </Grid>
+                                    </Border>
+                                    <Button x:Name="BtnUpdateIcon" Content="Change Avatar" Style="{StaticResource OutlineActionBtn}" VerticalAlignment="Center" FontSize="12" Click="BtnUpdateIcon_Click"/>
+                                </StackPanel>
+
+                                <TextBlock Text="CUSTOM STATUS" Foreground="#666" FontSize="10" FontWeight="Bold" Margin="0,0,0,8"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="InputStatusText" Style="{StaticResource SleekInput}" Margin="0,0,12,0"/>
+                                    <Button Grid.Column="1" Content="Update" Style="{StaticResource OutlineActionBtn}" Click="UpdateStatus_Click" Width="100"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <TextBlock Text="SECURITY &amp; HARDWARE" Foreground="#007ACC" FontSize="11" FontWeight="Bold" Margin="0,0,0,12"/>
+                        <Border Background="#111111" BorderBrush="#1A1A1A" BorderThickness="1" CornerRadius="8" Padding="25" Margin="0,0,0,25">
+                            <StackPanel>
+                                <TextBlock Text="CURRENT HWID" Foreground="#666" FontSize="10" FontWeight="Bold"/>
+                                <DockPanel Margin="0,8,0,20">
+                                    <Button x:Name="BtnRevealHwid" Content="REVEAL" Style="{StaticResource GhostActionBtn}" FontSize="11" FontWeight="Bold" Margin="0,0,15,0" Click="BtnRevealHwid_Click"/>
+                                    <TextBlock x:Name="TxtModalHwidDisplay" Text="••••-••••-••••-••••" Foreground="#888" VerticalAlignment="Center" FontSize="13" FontFamily="Consolas"/>
+                                </DockPanel>
+
+                                <TextBlock Text="NEW PASSWORD" Foreground="#666" FontSize="10" FontWeight="Bold" Margin="0,0,0,8"/>
+                                <PasswordBox x:Name="PassNewPassword" Style="{StaticResource SleekPassword}" Margin="0,0,0,20"/>
+
+                                <Button x:Name="BtnUpdatePassword" Content="Save Security Changes" Style="{StaticResource PremiumActionBtn}" Click="UpdatePassword_Click"/>
+                            </StackPanel>
+                        </Border>
+
+                        <TextBlock Text="GITHUB INTEGRATION" Foreground="#007ACC" FontSize="11" FontWeight="Bold" Margin="0,0,0,12"/>
+                        <Border Background="#111111" BorderBrush="#1A1A1A" BorderThickness="1" CornerRadius="8" Padding="25" Margin="0,0,0,25">
+                            <StackPanel>
+                                <TextBlock Text="GITHUB USERNAME" Foreground="#666" FontSize="10" FontWeight="Bold" Margin="0,0,0,8"/>
+                                <TextBox x:Name="InputGithubUsername" Style="{StaticResource SleekInput}" Margin="0,0,0,15"/>
+
+                                <TextBlock Text="PERSONAL ACCESS TOKEN" Foreground="#666" FontSize="10" FontWeight="Bold" Margin="0,0,0,8"/>
+                                <PasswordBox x:Name="InputGithubToken" Style="{StaticResource SleekPassword}" Margin="0,0,0,8"/>
+
+                                <TextBlock Text="Required to clone, pull, and push GSCLab project repositories securely." Foreground="#666" FontSize="11" Margin="0,0,0,20" TextWrapping="Wrap"/>
+
+                                <Button x:Name="BtnUpdateGithub" Content="Save GitHub Credentials" Style="{StaticResource OutlineActionBtn}" HorizontalAlignment="Left" FontSize="12" Click="BtnUpdateGithub_Click"/>
+                            </StackPanel>
+                        </Border>
+
+                        <TextBlock Text="DISCORD INTEGRATION" Foreground="#007ACC" FontSize="11" FontWeight="Bold" Margin="0,0,0,12"/>
+                        <Border Background="#111111" BorderBrush="#1A1A1A" BorderThickness="1" CornerRadius="8" Padding="25">
+                            <StackPanel>
+                                <TextBlock Text="DISCORD USER ID" Foreground="#666" FontSize="10" FontWeight="Bold" Margin="0,0,0,8"/>
+                                <TextBox x:Name="InputDiscordId" Style="{StaticResource SleekInput}" Margin="0,0,0,8"/>
+
+                                <TextBlock Text="Paste your Developer ID (e.g., 123456789012345678) to automatically sync your rank and roles in the official Discord server." Foreground="#666" FontSize="11" Margin="0,0,0,20" TextWrapping="Wrap"/>
+
+                                <Button x:Name="BtnUpdateDiscord" Content="Save Discord ID" Style="{StaticResource OutlineActionBtn}" HorizontalAlignment="Left" FontSize="12" Click="BtnUpdateDiscord_Click"/>
+                            </StackPanel>
+                        </Border>
+
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

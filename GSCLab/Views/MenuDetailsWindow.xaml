@@ -1,0 +1,400 @@
+﻿<Window x:Class="GSCLab.Views.MenuDetailsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:wpf="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+        xmlns:local="clr-namespace:GSCLab.Views"
+        Title="Menu Details" Height="640" Width="840"
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <local:GameImageConverter x:Key="GameImageConverter"/>
+        <local:ConsoleImageConverter x:Key="ConsoleImageConverter"/>
+        <local:ModeImageConverter x:Key="ModeImageConverter"/>
+
+        <Style x:Key="ImageCardListBoxItem" TargetType="ListBoxItem">
+            <Setter Property="Background" Value="#111"/>
+            <Setter Property="BorderBrush" Value="#222"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="#AAA"/>
+            <Setter Property="Margin" Value="0,0,8,8"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+        <Style x:Key="WinCloseBtn" TargetType="Button">
+            <Setter Property="Background" Value="#151515"/>
+            <Setter Property="Foreground" Value="#888"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" x:Name="border" CornerRadius="8" Width="26" Height="26" BorderBrush="#262626" BorderThickness="1">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-1,0,0"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter TargetName="border" Property="Background" Value="#C42B1C"/>
+                                <Setter TargetName="border" Property="BorderBrush" Value="#C42B1C"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="PrimaryActionBtn" TargetType="Button">
+            <Setter Property="Background" Value="#007ACC"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="22,10"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="8">
+                            <ContentPresenter Margin="{TemplateBinding Padding}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#008BE6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="OutlineActionBtn" TargetType="Button">
+            <Setter Property="Background" Value="#121212"/>
+            <Setter Property="Foreground" Value="#007ACC"/>
+            <Setter Property="BorderBrush" Value="#222"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="16,10"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="8">
+                            <ContentPresenter Margin="{TemplateBinding Padding}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="#007ACC"/>
+                                <Setter TargetName="border" Property="Background" Value="#181818"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="TabItem">
+            <Setter Property="Background" Value="#111111"/>
+            <Setter Property="Foreground" Value="#777"/>
+            <Setter Property="Padding" Value="16,6"/>
+            <Setter Property="Margin" Value="4,0,6,0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border x:Name="Border" Background="{TemplateBinding Background}" BorderBrush="#222" BorderThickness="1" CornerRadius="6" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter x:Name="ContentSite" VerticalAlignment="Center" HorizontalAlignment="Center" ContentSource="Header" RecognizesAccessKey="True"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="#161616"/>
+                                <Setter TargetName="Border" Property="BorderBrush" Value="#007ACC"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="BorderBrush" Value="#444"/>
+                                <Setter Property="Foreground" Value="#AAA"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="20">
+        <Border Background="#090909" CornerRadius="14" BorderBrush="#1C1C1C" BorderThickness="1" ClipToBounds="True">
+            <Border.Effect>
+                <DropShadowEffect Color="Black" BlurRadius="40" ShadowDepth="12" Opacity="0.8"/>
+            </Border.Effect>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" Background="#0D0D0D" Height="50" MouseLeftButtonDown="DragBar_MouseDown">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="20,0">
+                        <TextBlock Text="PROJECT SPECIFICATION" Foreground="#007ACC" FontSize="10" FontWeight="Black" VerticalAlignment="Center"/>
+                        <TextBlock Text=" // " Foreground="#333" FontSize="10" VerticalAlignment="Center" Margin="4,0"/>
+                        <TextBlock x:Name="TxtVersion" Text="v1.0.0" Foreground="#777" FontSize="10" FontWeight="Bold" VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                    <Button Content="✕" Style="{StaticResource WinCloseBtn}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,15,0" Click="CloseBtn_Click" Panel.ZIndex="30"/>
+                </Grid>
+
+                <Grid Grid.Row="1" Background="#0A0A0A">
+                    <!-- Added ClipToBounds="False" and adjusted margins to stop right-side header clipping -->
+                    <TabControl Background="Transparent" BorderThickness="0" Margin="12,8,12,0" Padding="6,2,6,0" ClipToBounds="False">
+
+                        <TabItem Header="Details">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="340"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Border Grid.Column="0" Background="#0E0E0E" BorderBrush="#1A1A1A" BorderThickness="0,0,1,0" Padding="15">
+                                    <Grid>
+                                        <Border CornerRadius="10" BorderBrush="#222" BorderThickness="1" ClipToBounds="True" Background="#050505">
+                                            <Grid>
+                                                <Image x:Name="BigCoverImage" Stretch="Uniform" RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                <Border Background="#000" Opacity="0.15" IsHitTestVisible="False"/>
+
+                                                <wpf:WebView2 x:Name="VideoWebView" DefaultBackgroundColor="Transparent" Visibility="Collapsed" Panel.ZIndex="10"/>
+
+                                                <Button x:Name="BtnBackToImage" Content="← Back to Cover" Visibility="Collapsed" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12" Click="BtnBackToImage_Click" Panel.ZIndex="20" Style="{StaticResource OutlineActionBtn}"/>
+                                            </Grid>
+                                        </Border>
+                                    </Grid>
+                                </Border>
+
+                                <Grid Grid.Column="1" Background="#0A0A0A">
+                                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                        <StackPanel Margin="20,15,20,15">
+                                            <TextBlock x:Name="TxtTitle" Text="Menu Title" Foreground="White" FontSize="22" FontWeight="Black" TextTrimming="CharacterEllipsis" Margin="0,0,0,4"/>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                                                <TextBlock Text="Created by " Foreground="#666" FontSize="12"/>
+                                                <TextBlock x:Name="TxtAuthor" Text="AuthorName" Foreground="#007ACC" FontSize="12" FontWeight="Bold"/>
+                                            </StackPanel>
+
+                                            <TextBlock Text="OVERVIEW" Foreground="#555" FontSize="9" FontWeight="Bold" Margin="0,0,0,6"/>
+                                            <TextBlock x:Name="TxtDescription" Text="Description goes here..." Foreground="#999" FontSize="12" TextWrapping="Wrap" LineHeight="18" Margin="0,0,0,16"/>
+
+                                            <TextBlock Text="TARGET PLATFORMS" Foreground="#555" FontSize="9" FontWeight="Bold" Margin="0,0,0,8"/>
+                                            <Border Background="#0E0E0E" BorderBrush="#181818" BorderThickness="1" CornerRadius="8" Padding="10" Margin="0,0,0,16">
+                                                <WrapPanel x:Name="PlatformLogosPanel"/>
+                                            </Border>
+
+                                            <TextBlock Text="VERSION CHANGELOG" Foreground="#555" FontSize="9" FontWeight="Bold" Margin="0,0,0,8"/>
+                                            <Border Background="#0E0E0E" BorderBrush="#181818" BorderThickness="1" CornerRadius="8" Padding="10">
+                                                <TextBlock x:Name="TxtChangelog" Text="Initial Release." Foreground="#777" FontSize="11" TextWrapping="Wrap" LineHeight="16" FontFamily="Consolas"/>
+                                            </Border>
+                                        </StackPanel>
+                                    </ScrollViewer>
+                                </Grid>
+                            </Grid>
+                        </TabItem>
+
+                        <TabItem Header="Injection Config">
+                            <Grid Margin="12,12,12,12">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Text="CONFIGURE INJECTION PARAMETERS" Foreground="#666" FontSize="10" FontWeight="Bold" Margin="0,0,0,10"/>
+
+                                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Disabled">
+                                    <StackPanel>
+                                        <!-- Game Selection ListBox -->
+                                        <TextBlock Text="SELECT GAME" Foreground="#555" FontSize="8" FontWeight="Bold" Margin="0,0,0,4"/>
+                                        <ListBox x:Name="GameListBox" Background="Transparent" BorderThickness="0" SelectionChanged="GameListBox_SelectionChanged" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,12">
+                                            <ListBox.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel/>
+                                                </ItemsPanelTemplate>
+                                            </ListBox.ItemsPanel>
+                                            <ListBox.ItemContainerStyle>
+                                                <Style TargetType="ListBoxItem" BasedOn="{StaticResource ImageCardListBoxItem}">
+                                                    <Setter Property="Content" Value="{Binding GameName}" />
+                                                    <Setter Property="Tag" Value="{Binding ShortName, Converter={StaticResource GameImageConverter}}" />
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="ListBoxItem">
+                                                                <Border x:Name="MainBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="5" Width="72" Height="88">
+                                                                    <Grid>
+                                                                        <Grid.RowDefinitions>
+                                                                            <RowDefinition Height="*"/>
+                                                                            <RowDefinition Height="22"/>
+                                                                        </Grid.RowDefinitions>
+                                                                        <Border x:Name="CornerMask" Background="Black" CornerRadius="4,4,0,0" />
+                                                                        <Image Source="{TemplateBinding Tag}" Stretch="UniformToFill" VerticalAlignment="Top" Margin="0">
+                                                                            <Image.OpacityMask>
+                                                                                <VisualBrush Visual="{Binding ElementName=CornerMask}"/>
+                                                                            </Image.OpacityMask>
+                                                                        </Image>
+                                                                        <Border x:Name="CheckIcon" Background="#007ACC" CornerRadius="0,4,0,4" HorizontalAlignment="Right" VerticalAlignment="Top" Width="14" Height="14" Visibility="Collapsed">
+                                                                            <TextBlock Text="✓" Foreground="White" FontSize="9" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                                        </Border>
+                                                                        <Border Grid.Row="1" Background="#151515" CornerRadius="0,0,4,4" BorderBrush="#222" BorderThickness="0,1,0,0">
+                                                                            <TextBlock Text="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" FontSize="8" FontWeight="SemiBold" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0"/>
+                                                                        </Border>
+                                                                    </Grid>
+                                                                </Border>
+                                                                <ControlTemplate.Triggers>
+                                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                                        <Setter TargetName="MainBorder" Property="BorderBrush" Value="#444"/>
+                                                                        <Setter Property="Foreground" Value="White"/>
+                                                                    </Trigger>
+                                                                    <Trigger Property="IsSelected" Value="True">
+                                                                        <Setter TargetName="MainBorder" Property="BorderBrush" Value="#007ACC"/>
+                                                                        <Setter TargetName="MainBorder" Property="BorderThickness" Value="2"/>
+                                                                        <Setter TargetName="CheckIcon" Property="Visibility" Value="Visible"/>
+                                                                        <Setter Property="Foreground" Value="White"/>
+                                                                    </Trigger>
+                                                                </ControlTemplate.Triggers>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </ListBox.ItemContainerStyle>
+                                        </ListBox>
+
+                                        <!-- Console Selection ListBox -->
+                                        <TextBlock Text="SELECT CONSOLE" Foreground="#555" FontSize="8" FontWeight="Bold" Margin="0,0,0,4"/>
+                                        <ListBox x:Name="ConsoleListBox" Background="Transparent" BorderThickness="0" SelectionChanged="CheckReadyState" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,12">
+                                            <ListBox.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel/>
+                                                </ItemsPanelTemplate>
+                                            </ListBox.ItemsPanel>
+                                            <ListBox.ItemContainerStyle>
+                                                <Style TargetType="ListBoxItem" BasedOn="{StaticResource ImageCardListBoxItem}">
+                                                    <Setter Property="Content" Value="{Binding}" />
+                                                    <Setter Property="Tag" Value="{Binding Converter={StaticResource ConsoleImageConverter}}" />
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="ListBoxItem">
+                                                                <Border x:Name="MainBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="5" Width="72" Height="88">
+                                                                    <Grid>
+                                                                        <Grid.RowDefinitions>
+                                                                            <RowDefinition Height="*"/>
+                                                                            <RowDefinition Height="22"/>
+                                                                        </Grid.RowDefinitions>
+                                                                        <Border x:Name="CornerMask" Background="Black" CornerRadius="4,4,0,0" />
+                                                                        <Image Source="{TemplateBinding Tag}" Stretch="UniformToFill" VerticalAlignment="Top" Margin="0">
+                                                                            <Image.OpacityMask>
+                                                                                <VisualBrush Visual="{Binding ElementName=CornerMask}"/>
+                                                                            </Image.OpacityMask>
+                                                                        </Image>
+                                                                        <Border x:Name="CheckIcon" Background="#007ACC" CornerRadius="0,4,0,4" HorizontalAlignment="Right" VerticalAlignment="Top" Width="14" Height="14" Visibility="Collapsed">
+                                                                            <TextBlock Text="✓" Foreground="White" FontSize="9" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                                        </Border>
+                                                                        <Border Grid.Row="1" Background="#151515" CornerRadius="0,0,4,4" BorderBrush="#222" BorderThickness="0,1,0,0">
+                                                                            <TextBlock Text="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" FontSize="8" FontWeight="SemiBold" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0"/>
+                                                                        </Border>
+                                                                    </Grid>
+                                                                </Border>
+                                                                <ControlTemplate.Triggers>
+                                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                                        <Setter TargetName="MainBorder" Property="BorderBrush" Value="#444"/>
+                                                                        <Setter Property="Foreground" Value="White"/>
+                                                                    </Trigger>
+                                                                    <Trigger Property="IsSelected" Value="True">
+                                                                        <Setter TargetName="MainBorder" Property="BorderBrush" Value="#007ACC"/>
+                                                                        <Setter TargetName="MainBorder" Property="BorderThickness" Value="2"/>
+                                                                        <Setter TargetName="CheckIcon" Property="Visibility" Value="Visible"/>
+                                                                        <Setter Property="Foreground" Value="White"/>
+                                                                    </Trigger>
+                                                                </ControlTemplate.Triggers>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </ListBox.ItemContainerStyle>
+                                        </ListBox>
+
+                                        <!-- Mode Selection ListBox -->
+                                        <TextBlock Text="SELECT MODE" Foreground="#555" FontSize="8" FontWeight="Bold" Margin="0,0,0,4"/>
+                                        <ListBox x:Name="ModeListBox" Background="Transparent" BorderThickness="0" SelectionChanged="CheckReadyState" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                            <ListBox.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel/>
+                                                </ItemsPanelTemplate>
+                                            </ListBox.ItemsPanel>
+                                            <ListBox.ItemContainerStyle>
+                                                <Style TargetType="ListBoxItem" BasedOn="{StaticResource ImageCardListBoxItem}">
+                                                    <Setter Property="Content" Value="{Binding}" />
+                                                    <Setter Property="Tag" Value="{Binding Converter={StaticResource ModeImageConverter}}" />
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="ListBoxItem">
+                                                                <Border x:Name="MainBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="5" Width="72" Height="88">
+                                                                    <Grid>
+                                                                        <Grid.RowDefinitions>
+                                                                            <RowDefinition Height="*"/>
+                                                                            <RowDefinition Height="22"/>
+                                                                        </Grid.RowDefinitions>
+                                                                        <Border x:Name="CornerMask" Background="Black" CornerRadius="4,4,0,0" />
+                                                                        <Image Source="{TemplateBinding Tag}" Stretch="UniformToFill" VerticalAlignment="Top" Margin="0">
+                                                                            <Image.OpacityMask>
+                                                                                <VisualBrush Visual="{Binding ElementName=CornerMask}"/>
+                                                                            </Image.OpacityMask>
+                                                                        </Image>
+                                                                        <Border x:Name="CheckIcon" Background="#007ACC" CornerRadius="0,4,0,4" HorizontalAlignment="Right" VerticalAlignment="Top" Width="14" Height="14" Visibility="Collapsed">
+                                                                            <TextBlock Text="✓" Foreground="White" FontSize="9" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                                        </Border>
+                                                                        <Border Grid.Row="1" Background="#151515" CornerRadius="0,0,4,4" BorderBrush="#222" BorderThickness="0,1,0,0">
+                                                                            <TextBlock Text="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" FontSize="8" FontWeight="SemiBold" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0"/>
+                                                                        </Border>
+                                                                    </Grid>
+                                                                </Border>
+                                                                <ControlTemplate.Triggers>
+                                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                                        <Setter TargetName="MainBorder" Property="BorderBrush" Value="#444"/>
+                                                                        <Setter Property="Foreground" Value="White"/>
+                                                                    </Trigger>
+                                                                    <Trigger Property="IsSelected" Value="True">
+                                                                        <Setter TargetName="MainBorder" Property="BorderBrush" Value="#007ACC"/>
+                                                                        <Setter TargetName="MainBorder" Property="BorderThickness" Value="2"/>
+                                                                        <Setter TargetName="CheckIcon" Property="Visibility" Value="Visible"/>
+                                                                        <Setter Property="Foreground" Value="White"/>
+                                                                    </Trigger>
+                                                                </ControlTemplate.Triggers>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </ListBox.ItemContainerStyle>
+                                        </ListBox>
+                                    </StackPanel>
+                                </ScrollViewer>
+                            </Grid>
+                        </TabItem>
+
+                    </TabControl>
+                </Grid>
+
+                <Border Grid.Row="2" Background="#0D0D0D" BorderBrush="#1C1C1C" BorderThickness="0,1,0,0" Padding="25,16">
+                    <Grid>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="PRICING:" Foreground="#555" FontSize="10" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                            <TextBlock x:Name="TxtPrice" Text="Free" Foreground="#28A745" FontWeight="Black" FontSize="16" VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button x:Name="BtnYoutube" Style="{StaticResource OutlineActionBtn}" Margin="0,0,10,0" ToolTip="Watch Showcase" Click="BtnYoutube_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="▶" Foreground="#FF4444" FontSize="12" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Trailer" Foreground="White" FontWeight="Bold" FontSize="11" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+
+                            <Button x:Name="BtnAction" Content="⚡ Inject Menu" Style="{StaticResource PrimaryActionBtn}" Width="135" FontSize="12" FontWeight="Bold" Click="BtnAction_Click"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

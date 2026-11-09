@@ -1,0 +1,152 @@
+﻿<Window x:Class="GSCLab.Views.CloneRepoWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Clone Repository" Height="280" Width="550" 
+        WindowStartupLocation="CenterScreen"
+        Background="Transparent" 
+        WindowStyle="None"
+        AllowsTransparency="True"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown">
+
+    <Window.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="#111"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#222"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="CaretBrush" Value="#007ACC"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="4">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="0" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="WindowCloseBtnStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#777"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" x:Name="border" CornerRadius="0,8,0,0">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#C42B1C"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="PrimaryActionBtn" TargetType="Button">
+            <Setter Property="Background" Value="#007ACC"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="15,6"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="4" x:Name="border">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#0090FF"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SecondaryActionBtn" TargetType="Button">
+            <Setter Property="Background" Value="#222"/>
+            <Setter Property="Foreground" Value="#CCC"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="15,5"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="4" x:Name="border">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#333"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="15">
+        <Border Background="#0C0C0C" BorderBrush="#222" BorderThickness="1" CornerRadius="8">
+            <Border.Effect>
+                <DropShadowEffect Color="Black" BlurRadius="25" ShadowDepth="8" Opacity="0.6"/>
+            </Border.Effect>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="45"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="60"/>
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0" Background="#111" CornerRadius="8,8,0,0" BorderBrush="#1A1A1A" BorderThickness="0,0,0,1">
+                    <Grid>
+                        <DockPanel Margin="15,0,0,0" VerticalAlignment="Center">
+                            <Ellipse Width="8" Height="8" Fill="#007ACC" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <TextBlock Text="CLONE A REPOSITORY" FontWeight="Bold" Foreground="White" FontSize="12" VerticalAlignment="Center"/>
+                        </DockPanel>
+
+                        <Button Content="✕" Style="{StaticResource WindowCloseBtnStyle}" Width="45" HorizontalAlignment="Right" VerticalAlignment="Stretch" Click="CloseButton_Click" FontSize="12"/>
+                    </Grid>
+                </Border>
+
+                <StackPanel Grid.Row="1" Margin="25,18,25,0">
+                    <TextBlock Text="REPOSITORY URL" Foreground="#666" FontSize="10" FontWeight="Bold" Margin="0,0,0,6"/>
+                    <TextBox x:Name="RepoUrlBox" Text="https://github.com/Username/Repo.git" Foreground="#888" Height="32" GotFocus="RepoUrlBox_GotFocus"/>
+
+                    <TextBlock Text="LOCAL PATH" Foreground="#666" FontSize="10" FontWeight="Bold" Margin="0,12,0,6"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox x:Name="LocalPathBox" Grid.Column="0" Margin="0,0,10,0" Height="32"/>
+
+                        <Button Grid.Column="1" Content="Browse" Style="{StaticResource SecondaryActionBtn}" Height="32" Width="75" Click="BrowseButton_Click"/>
+                    </Grid>
+                </StackPanel>
+
+                <Border Grid.Row="2" Background="#111" CornerRadius="0,0,8,8" BorderBrush="#1A1A1A" BorderThickness="0,1,0,0">
+                    <DockPanel Margin="20,0">
+                        <Button Content="Cancel" Style="{StaticResource SecondaryActionBtn}" HorizontalAlignment="Left" VerticalAlignment="Center" Height="32" Width="90" Click="CloseButton_Click"/>
+                        <Button Content="Clone" Style="{StaticResource PrimaryActionBtn}" HorizontalAlignment="Right" VerticalAlignment="Center" Height="32" Width="100" Click="CloneButton_Click" Name="CloneButton"/>
+                    </DockPanel>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

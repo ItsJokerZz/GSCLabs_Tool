@@ -1,0 +1,152 @@
+﻿<Window x:Class="GSCLab.Views.TermsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Terms of Service" Height="580" Width="500"
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
+
+    <Window.Resources>
+        <Style x:Key="ModernScrollBarThumb" TargetType="Thumb">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Thumb">
+                        <Border Background="#007ACC" CornerRadius="3" Width="15" Margin="2,0"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="ScrollBar">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Width" Value="10"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Grid Background="Transparent">
+                            <Track x:Name="PART_Track" IsDirectionReversed="True">
+                                <Track.Thumb>
+                                    <Thumb Style="{StaticResource ModernScrollBarThumb}"/>
+                                </Track.Thumb>
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="PrimaryActionBtn" TargetType="Button">
+            <Setter Property="Background" Value="#007ACC"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Padding" Value="25,0"/>
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="MinWidth" Value="140"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" x:Name="border" CornerRadius="6">
+                            <ContentPresenter Margin="{TemplateBinding Padding}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#0098FF"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="TermsHeaderTxt" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#007ACC"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Margin" Value="0,0,0,6"/>
+        </Style>
+
+        <Style x:Key="TermsBodyTxt" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#BBBBBB"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="LineHeight" Value="18"/>
+            <Setter Property="Margin" Value="0,0,0,20"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="25">
+        <Border Background="#0C0C0C" BorderBrush="#222" BorderThickness="1" CornerRadius="10">
+
+            <Border.Effect>
+                <DropShadowEffect Color="Black" BlurRadius="30" ShadowDepth="10" Opacity="0.6"/>
+            </Border.Effect>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0" Background="#111" CornerRadius="10,10,0,0" BorderBrush="#1A1A1A" BorderThickness="0,0,0,1" Padding="25,18">
+                    <DockPanel LastChildFill="False">
+                        <Ellipse Width="8" Height="8" Fill="#007ACC" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <TextBlock Text="TERMS OF SERVICE" VerticalAlignment="Center" FontWeight="Black" Foreground="White" FontSize="13"/>
+                    </DockPanel>
+                </Border>
+
+                <ScrollViewer Grid.Row="1" Margin="30,25,20,10" VerticalScrollBarVisibility="Auto" Padding="0,0,10,0">
+                    <StackPanel>
+
+                        <TextBlock Text="1. LICENSE GRANT" Style="{StaticResource TermsHeaderTxt}"/>
+                        <TextBlock Style="{StaticResource TermsBodyTxt}">
+                            GSCLab grants you a personal, non-transferable, non-exclusive license to use the Software for personal, non-commercial educational and creative purposes, subject to these Terms.
+                        </TextBlock>
+
+                        <TextBlock Text="2. ACCEPTABLE USE POLICY" Style="{StaticResource TermsHeaderTxt}"/>
+                        <TextBlock Style="{StaticResource TermsBodyTxt}" Margin="0,0,0,5">
+                            You agree to use GSCLab strictly for editing and compiling GSC scripts for compatible games. You agree NOT to:
+                        </TextBlock>
+                        <TextBlock Foreground="#999" FontSize="12" TextWrapping="Wrap" LineHeight="20" Margin="15,0,0,20">
+                            • <Span Foreground="#DDD" FontWeight="SemiBold">Malicious Use:</Span> Create or use scripts intended to crash lobbies or harass players.<LineBreak/>
+                            • <Span Foreground="#DDD" FontWeight="SemiBold">Cheating:</Span> Use Software for unfair advantages where prohibited by game ToS.<LineBreak/>
+                            • <Span Foreground="#DDD" FontWeight="SemiBold">Commercialization:</Span> Sell or lease the Software without permission.<LineBreak/>
+                            • <Span Foreground="#DDD" FontWeight="SemiBold">Reverse Engineering:</Span> Decompile any portion of GSCLab or its API.
+                        </TextBlock>
+
+                        <TextBlock Text="3. USER RESPONSIBILITY &amp; BANS" Style="{StaticResource TermsHeaderTxt}"/>
+                        <TextBlock Style="{StaticResource TermsBodyTxt}">
+                            You acknowledge that modifying game memory carries inherent risks. The developer is not responsible for account suspensions or console bans. You use this Software entirely at your own risk.
+                        </TextBlock>
+
+                        <TextBlock Text="4. INTELLECTUAL PROPERTY" Style="{StaticResource TermsHeaderTxt}"/>
+                        <TextBlock Style="{StaticResource TermsBodyTxt}">
+                            GSCLab, its interface, and compiler logic are the intellectual property of the developer. You retain ownership of unique GSC scripts you write.
+                        </TextBlock>
+
+                        <TextBlock Text="5. UPDATES &amp; ONLINE SERVICES" Style="{StaticResource TermsHeaderTxt}"/>
+                        <TextBlock Style="{StaticResource TermsBodyTxt}">
+                            An active internet connection is required for authentication and remote compilation. We do not guarantee 100% server uptime.
+                        </TextBlock>
+
+                        <TextBlock Text="6. DISCLAIMER &amp; LIABILITY" Style="{StaticResource TermsHeaderTxt}"/>
+                        <TextBlock Style="{StaticResource TermsBodyTxt}" FontStyle="Italic" Foreground="#999">
+                            THE SOFTWARE IS PROVIDED "AS IS." IN NO EVENT SHALL THE DEVELOPER BE LIABLE FOR LOSS OF DATA, GAME ACCOUNTS, OR PROFIT ARISING OUT OF USE.
+                        </TextBlock>
+
+                        <TextBlock Text="7. TERMINATION" Style="{StaticResource TermsHeaderTxt}"/>
+                        <TextBlock Style="{StaticResource TermsBodyTxt}" FontStyle="Italic" Foreground="#999">
+                            We reserve the right to terminate your license and block your access to the Software immediately, without prior notice, if you fail to comply with any term of this agreement, particularly regarding malicious use or reverse engineering.
+                        </TextBlock>
+
+                    </StackPanel>
+                </ScrollViewer>
+
+                <Border Grid.Row="2" Background="#111" CornerRadius="0,0,10,10" BorderBrush="#1A1A1A" BorderThickness="0,1,0,0" Padding="25,20">
+                    <Button Content="I Understand &amp; Agree" Click="Close_Click" Style="{StaticResource PrimaryActionBtn}" HorizontalAlignment="Right"/>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

@@ -1,0 +1,11 @@
+{
+    "Name": "My Application Protection",
+    "RunConfiguration": "*",
+    "ProjectToken": "bh_cxOT8ZeUv8msnQ0tyyfWEMwS53SLsTbUA",
+    "Preset": "custom",
+    "Protections": {
+        "rename": {},
+        "anti_debug": {},
+        "control_flow_advance": {}
+    }
+}

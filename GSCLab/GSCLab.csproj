@@ -1,0 +1,141 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\account.png" />
+    <None Remove="Assets\aw.jpg" />
+    <None Remove="Assets\aw_logo.png" />
+    <None Remove="Assets\BO3.jpg" />
+    <None Remove="Assets\bundle_logo.png" />
+    <None Remove="Assets\ccapi_logo.png" />
+    <None Remove="Assets\chat.png" />
+    <None Remove="Assets\cod4.jpg" />
+    <None Remove="Assets\cod4_logo.png" />
+    <None Remove="Assets\compiler.png" />
+    <None Remove="Assets\cw.jpg" />
+    <None Remove="Assets\discord_logo.png" />
+    <None Remove="Assets\extinction_logo.png" />
+    <None Remove="Assets\ez_logo.png" />
+    <None Remove="Assets\ghosts.jpg" />
+    <None Remove="Assets\gho_logo.png" />
+    <None Remove="Assets\github_logo.png" />
+    <None Remove="Assets\gsclab_logo.png" />
+    <None Remove="Assets\home.png" />
+    <None Remove="Assets\iw.jpg" />
+    <None Remove="Assets\iw_logo.png" />
+    <None Remove="Assets\library.png" />
+    <None Remove="Assets\mp_logo.png" />
+    <None Remove="Assets\mw2019.jpg" />
+    <None Remove="Assets\mw2019_logo.png" />
+    <None Remove="Assets\mw22.jpg" />
+    <None Remove="Assets\mw2cr.jpg" />
+    <None Remove="Assets\mw2cr_logo.png" />
+    <None Remove="Assets\mw3.jpg" />
+    <None Remove="Assets\mw3_logo.png" />
+    <None Remove="Assets\mwiii.png" />
+    <None Remove="Assets\mwii_logo.png" />
+    <None Remove="Assets\mwr.jpg" />
+    <None Remove="Assets\mwr_logo.png" />
+    <None Remove="Assets\ps4_logo.png" />
+    <None Remove="Assets\settings.png" />
+    <None Remove="Assets\sp_logo.png" />
+    <None Remove="Assets\tmapi_logo.png" />
+    <None Remove="Assets\vanguard.jpg" />
+    <None Remove="Assets\vg_logo.png" />
+    <None Remove="Assets\ww2.jpg" />
+    <None Remove="Assets\ww2_logo.png" />
+    <None Remove="Assets\xbox360.png" />
+    <None Remove="Assets\zm_logo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\cod4_logo.png" />
+    <Resource Include="Assets\cw.jpg" />
+    <Resource Include="Assets\mw2019.jpg" />
+    <Resource Include="Assets\mw2019_logo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AvalonEdit" Version="6.3.1.120" />
+    <PackageReference Include="DiscordRichPresence" Version="1.6.1.70" />
+    <PackageReference Include="Irony.NetCore" Version="1.1.11" />
+    <PackageReference Include="LibGit2Sharp" Version="0.31.0" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3967.48" />
+    <PackageReference Include="System.Management" Version="10.0.3" />
+    <PackageReference Include="System.Text.Json" Version="10.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="JRPC">
+      <HintPath>..\..\..\All My Stuff\Xbox 360 Modding\JRPC.dll</HintPath>
+    </Reference>
+    <Reference Include="NexusFramework">
+      <HintPath>..\..\..\..\..\Downloads\NexusFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="PS3Lib">
+      <HintPath>..\..\..\All My Stuff\PS3 Modding\PS3Lib.dll</HintPath>
+    </Reference>
+    <Reference Include="PS3ManagerAPI">
+      <HintPath>..\..\..\..\..\Downloads\PS3ManagerAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="XDevkit">
+      <HintPath>..\..\..\All My Stuff\Xbox 360 Modding\xdevkit.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\account.png" />
+    <Resource Include="Assets\aw.jpg" />
+    <Resource Include="Assets\aw_logo.png" />
+    <Resource Include="Assets\BO3.jpg" />
+    <Resource Include="Assets\bundle_logo.png" />
+    <Resource Include="Assets\ccapi_logo.png" />
+    <Resource Include="Assets\chat.png" />
+    <Resource Include="Assets\cod4.jpg" />
+    <Resource Include="Assets\compiler.png" />
+    <Resource Include="Assets\discord_logo.png" />
+    <Resource Include="Assets\extinction_logo.png" />
+    <Resource Include="Assets\ez_logo.png" />
+    <Resource Include="Assets\ghosts.jpg" />
+    <Resource Include="Assets\gho_logo.png" />
+    <Resource Include="Assets\github_logo.png" />
+    <Resource Include="Assets\gsclab_logo.png" />
+    <Resource Include="Assets\home.png" />
+    <Resource Include="Assets\iw.jpg" />
+    <Resource Include="Assets\iw_logo.png" />
+    <Resource Include="Assets\library.png" />
+    <Resource Include="Assets\mp_logo.png" />
+    <Resource Include="Assets\mw22.jpg" />
+    <Resource Include="Assets\mw2cr.jpg" />
+    <Resource Include="Assets\mw2cr_logo.png" />
+    <Resource Include="Assets\mw3.jpg" />
+    <Resource Include="Assets\mw3_logo.png" />
+    <Resource Include="Assets\mwiii.png" />
+    <Resource Include="Assets\mwii_logo.png" />
+    <Resource Include="Assets\mwr.jpg" />
+    <Resource Include="Assets\mwr_logo.png" />
+    <Resource Include="Assets\ps4_logo.png" />
+    <Resource Include="Assets\settings.png" />
+    <Resource Include="Assets\sp_logo.png" />
+    <Resource Include="Assets\tmapi_logo.png" />
+    <Resource Include="Assets\vanguard.jpg" />
+    <Resource Include="Assets\vg_logo.png" />
+    <Resource Include="Assets\ww2.jpg" />
+    <Resource Include="Assets\ww2_logo.png" />
+    <Resource Include="Assets\xbox360.png" />
+    <Resource Include="Assets\zm_logo.png" />
+  </ItemGroup>
+
+</Project>

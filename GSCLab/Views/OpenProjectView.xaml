@@ -1,0 +1,287 @@
+﻿<Window x:Class="GSCLab.Views.OpenProjectView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="GSCLab - Start" Height="580" Width="1000" WindowStartupLocation="CenterScreen"
+        Background="Transparent" 
+        WindowStyle="None"
+        AllowsTransparency="True">
+
+    <Window.Resources>
+        <Style TargetType="ScrollBar">
+            <Setter Property="Background" Value="#111"/>
+            <Setter Property="Width" Value="8"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Grid Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
+                            <Track x:Name="PART_Track" IsDirectionReversed="true">
+                                <Track.Thumb>
+                                    <Thumb x:Name="Thumb">
+                                        <Thumb.Template>
+                                            <ControlTemplate TargetType="Thumb">
+                                                <Border x:Name="ThumbBorder" Background="#007ACC" CornerRadius="4"/>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="ThumbBorder" Property="Background" Value="#008BE6"/>
+                                                    </Trigger>
+                                                    <Trigger Property="IsDragging" Value="True">
+                                                        <Setter TargetName="ThumbBorder" Property="Background" Value="#005C99"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Thumb.Template>
+                                    </Thumb>
+                                </Track.Thumb>
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="CloseBtnStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#777"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" x:Name="border" CornerRadius="0,8,0,0">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#C42B1C"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ProjectActionBtn" TargetType="Button">
+            <Setter Property="Background" Value="#111"/>
+            <Setter Property="Foreground" Value="#CCC"/>
+            <Setter Property="BorderBrush" Value="#222"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Margin" Value="0,0,0,12"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="4" x:Name="brd">
+                            <Grid Margin="15,12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="35"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <ContentControl Content="{TemplateBinding Tag}" Grid.Column="0" VerticalAlignment="Center"/>
+                                <TextBlock Text="{TemplateBinding Content}" Grid.Column="1" VerticalAlignment="Center" FontSize="13" FontWeight="SemiBold" Margin="5,0,0,0"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="brd" Property="Background" Value="#181818"/>
+                                <Setter TargetName="brd" Property="BorderBrush" Value="#333"/>
+                                <Setter Property="Foreground" Value="#007ACC"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="CategoryProjectItemStyle" TargetType="ListBoxItem">
+            <Setter Property="Background" Value="#181818"/>
+            <Setter Property="BorderBrush" Value="#2A2A2A"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="0,3"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border x:Name="itemBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="4" Padding="10">
+                            <ContentPresenter/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="itemBorder" Property="Background" Value="#1C2833"/>
+                                <Setter TargetName="itemBorder" Property="BorderBrush" Value="#007ACC"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="itemBorder" Property="Background" Value="#1A252F"/>
+                                <Setter TargetName="itemBorder" Property="BorderBrush" Value="#007ACC"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="Expander">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="#222"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Margin" Value="0,0,10,8"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Expander">
+                        <Border Background="#111" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="4">
+                            <DockPanel>
+                                <ToggleButton x:Name="HeaderSite" DockPanel.Dock="Top" 
+                                              IsChecked="{Binding Path=IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                              Background="Transparent" BorderThickness="0" Cursor="Hand" Padding="12,10">
+                                    <ToggleButton.Template>
+                                        <ControlTemplate TargetType="ToggleButton">
+                                            <Border Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <ContentPresenter Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                                    <Path x:Name="Arrow" Grid.Column="1" Data="M 0 0 L 4 4 L 8 0" Stroke="#777" StrokeThickness="2" 
+                                                          HorizontalAlignment="Right" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+                                                        <Path.RenderTransform>
+                                                            <RotateTransform Angle="0"/>
+                                                        </Path.RenderTransform>
+                                                    </Path>
+                                                </Grid>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsChecked" Value="True">
+                                                    <Setter TargetName="Arrow" Property="RenderTransform">
+                                                        <Setter.Value>
+                                                            <RotateTransform Angle="180"/>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                    <Setter TargetName="Arrow" Property="Stroke" Value="#007ACC"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </ToggleButton.Template>
+                                    <ContentPresenter ContentSource="Header" TextBlock.Foreground="White" TextBlock.FontWeight="Bold" TextBlock.FontSize="13"/>
+                                </ToggleButton>
+                                <ContentPresenter x:Name="ExpandSite" DockPanel.Dock="Bottom" Visibility="Collapsed" Margin="12,0,12,10"/>
+                            </DockPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsExpanded" Value="True">
+                                <Setter TargetName="ExpandSite" Property="Visibility" Value="Visible"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="15">
+        <Border Background="#0C0C0C" BorderBrush="#222" BorderThickness="1" CornerRadius="8">
+            <Border.Effect>
+                <DropShadowEffect Color="Black" BlurRadius="25" ShadowDepth="8" Opacity="0.6"/>
+            </Border.Effect>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="45"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0" Background="#111" CornerRadius="8,8,0,0" BorderBrush="#1A1A1A" BorderThickness="0,0,0,1">
+                    <Grid>
+                        <DockPanel Margin="15,0,0,0" VerticalAlignment="Center">
+                            <Ellipse Width="8" Height="8" Fill="#007ACC" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <TextBlock Text="OPEN PROJECT" FontWeight="Bold" Foreground="White" FontSize="12" VerticalAlignment="Center"/>
+                        </DockPanel>
+
+                        <Button Content="✕" Style="{StaticResource CloseBtnStyle}" Name="CloseButton" Click="CloseButton_Click" Width="45" HorizontalAlignment="Right" VerticalAlignment="Stretch" FontSize="12"/>
+                    </Grid>
+                </Border>
+
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="380"/>
+                    </Grid.ColumnDefinitions>
+
+                    <DockPanel Grid.Column="0" Margin="35,30,15,30">
+                        <StackPanel DockPanel.Dock="Top" Margin="0,0,0,25">
+                            <TextBlock Text="Open Recent" Foreground="White" FontSize="22" FontWeight="Bold"/>
+                            <TextBlock Text="Open a recent project from Documents\GSCLabs" Foreground="#666" FontSize="11" Margin="0,4,0,0"/>
+                        </StackPanel>
+
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                            <ItemsControl x:Name="ProjectsGroupsControl">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Expander>
+                                            <Expander.Header>
+                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                    <Image Source="{Binding GameIcon}" Width="18" Height="18" Margin="0,0,8,0" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                                    <TextBlock Text="{Binding GameName}" VerticalAlignment="Center"/>
+                                                </StackPanel>
+                                            </Expander.Header>
+
+                                            <ListBox ItemsSource="{Binding Projects}" 
+                                             ItemContainerStyle="{StaticResource CategoryProjectItemStyle}"
+                                             Background="Transparent" 
+                                             BorderThickness="0" 
+                                             MouseDoubleClick="ProjectsListBox_MouseDoubleClick"
+                                             PreviewMouseWheel="ListBox_PreviewMouseWheel">     
+                                                <ListBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="32"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <Image Source="{Binding IconPath}" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                                            <StackPanel Grid.Column="1" Margin="8,0,0,0" VerticalAlignment="Center">
+                                                                <TextBlock Text="{Binding ProjectName}" Foreground="White" FontSize="12" FontWeight="SemiBold"/>
+                                                                <TextBlock Text="{Binding FullPath}" Foreground="#888" FontSize="10" TextTrimming="CharacterEllipsis"/>
+                                                            </StackPanel>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </ListBox.ItemTemplate>
+                                            </ListBox>
+                                        </Expander>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </DockPanel>
+
+                    <Border Grid.Column="1" Background="#111" CornerRadius="0,0,8,0" BorderBrush="#1A1A1A" BorderThickness="1,0,0,0">
+                        <StackPanel Margin="25,30,25,25">
+                            <TextBlock Text="Get Started" Foreground="White" FontSize="18" FontWeight="Bold" Margin="0,0,0,25"/>
+
+                            <Button Content="Create a new project" Style="{StaticResource ProjectActionBtn}" Name="NewProjectButton" Click="NewProjectButton_Click">
+                                <Button.Tag>
+                                    <TextBlock Text="✨" Foreground="#007ACC" FontSize="16" HorizontalAlignment="Center"/>
+                                </Button.Tag>
+                            </Button>
+
+                            <Button Content="Open a folder" Style="{StaticResource ProjectActionBtn}">
+                                <Button.Tag>
+                                    <TextBlock Text="📂" Foreground="#007ACC" FontSize="16" HorizontalAlignment="Center"/>
+                                </Button.Tag>
+                            </Button>
+
+                            <Button Content="Clone a repository" Style="{StaticResource ProjectActionBtn}" Name="btnCloneProject" Click="btnCloneProject_Click">
+                                <Button.Tag>
+                                    <TextBlock Text="🔗" Foreground="#007ACC" FontSize="16" HorizontalAlignment="Center"/>
+                                </Button.Tag>
+                            </Button>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

@@ -1,0 +1,195 @@
+﻿<UserControl x:Class="GSCLab.Views.ProjectConfigControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="#0A0A0A" Foreground="White"
+             Margin="0" x:Name="ConfigControl">
+
+    <UserControl.Resources>
+        <Style TargetType="ScrollBar">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Border Background="#111" Width="8" HorizontalAlignment="Right" CornerRadius="4">
+                            <Track x:Name="PART_Track" IsDirectionReversed="true" IsEnabled="{TemplateBinding IsMouseOver}">
+                                <Track.Thumb>
+                                    <Thumb x:Name="Thumb">
+                                        <Thumb.Template>
+                                            <ControlTemplate TargetType="Thumb">
+                                                <Border Background="#007ACC" CornerRadius="4" Margin="1" />
+                                            </ControlTemplate>
+                                        </Thumb.Template>
+                                    </Thumb>
+                                </Track.Thumb>
+                            </Track>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="#111"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#222"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="Margin" Value="0,0,0,15"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="4">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="0" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SectionHeader" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#007ACC"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="Black"/>
+            <Setter Property="Margin" Value="0,20,0,10"/>
+        </Style>
+
+        <Style x:Key="LabelTxt" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#888"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="0,0,0,5"/>
+        </Style>
+
+        <Style x:Key="ImageCardRadio" TargetType="RadioButton">
+            <Setter Property="Background" Value="#111"/>
+            <Setter Property="BorderBrush" Value="#222"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="#AAA"/>
+            <Setter Property="Margin" Value="0,0,15,15"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border x:Name="MainBorder" Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="6" Width="110" Height="140">
+
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="35"/>
+                                </Grid.RowDefinitions>
+
+                                <Border x:Name="CornerMask" Background="Black" CornerRadius="5,5,0,0" />
+
+                                <Image Source="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" 
+                                       Stretch="UniformToFill" VerticalAlignment="Top" Margin="0">
+                                    <Image.OpacityMask>
+                                        <VisualBrush Visual="{Binding ElementName=CornerMask}"/>
+                                    </Image.OpacityMask>
+                                </Image>
+
+                                <Border x:Name="CheckIcon" Background="#007ACC" CornerRadius="0,5,0,5" 
+                                        HorizontalAlignment="Right" VerticalAlignment="Top" 
+                                        Width="20" Height="20" Visibility="Collapsed">
+                                    <TextBlock Text="✓" Foreground="White" FontSize="12" FontWeight="Bold" 
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+
+                                <Border Grid.Row="1" Background="#151515" CornerRadius="0,0,5,5" BorderBrush="#222" BorderThickness="0,1,0,0">
+                                    <TextBlock Text="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" 
+                                               FontSize="10" FontWeight="SemiBold" TextWrapping="Wrap" TextAlignment="Center"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,0"/>
+                                </Border>
+                            </Grid>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="MainBorder" Property="BorderBrush" Value="#444"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="MainBorder" Property="BorderBrush" Value="#007ACC"/>
+                                <Setter TargetName="MainBorder" Property="BorderThickness" Value="2"/>
+                                <Setter TargetName="CheckIcon" Property="Visibility" Value="Visible"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="30">
+
+            <TextBlock Text="PROJECT DETAILS" Style="{StaticResource SectionHeader}" Margin="0,0,0,10"/>
+
+            <Border Background="#111" CornerRadius="8" BorderBrush="#1A1A1A" BorderThickness="1" Padding="15">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="40"/>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="PROJECT TITLE" Style="{StaticResource LabelTxt}" VerticalAlignment="Center" Margin="0,0,0,15"/>
+                    <TextBox x:Name="TitleTextBox" Text="My_Custom_Menu" Grid.Column="1" Margin="0,0,0,15" Padding="8,5"/>
+
+                    <TextBlock Text="START DATE" Style="{StaticResource LabelTxt}" Grid.Column="3" VerticalAlignment="Center" Margin="0,0,0,15"/>
+                    <TextBox x:Name="StartDateTextBox" Text="03/10/2026" Grid.Column="4" Margin="0,0,0,15" Padding="8,5" Foreground="#777" IsReadOnly="True" Background="#0C0C0C"/>
+
+                    <TextBlock Text="AUTHOR" Style="{StaticResource LabelTxt}" Grid.Row="1" VerticalAlignment="Center" Margin="0"/>
+                    <TextBox x:Name="AuthorTextBox" Text="Skidf" Grid.Row="1" Grid.Column="1" Margin="0" Padding="8,5"/>
+
+                    <TextBlock Text="MODE" Style="{StaticResource LabelTxt}" Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" Margin="0"/>
+                    <TextBox x:Name="ModeTextBox" Text="Zombies" Grid.Row="1" Grid.Column="4" Margin="0" Padding="8,5" Foreground="#777" IsReadOnly="True" Background="#0C0C0C"/>
+                </Grid>
+            </Border>
+
+            <TextBlock Text="SELECT GAME" Style="{StaticResource SectionHeader}"/>
+            <WrapPanel x:Name="GamePanel" RadioButton.Checked="OnGameSettingsChanged">
+                <RadioButton Style="{StaticResource ImageCardRadio}" GroupName="Game" Content="COD : MW" Uid="mw1" Tag="pack://application:,,,/Assets/cod4.jpg"/>
+                <RadioButton Style="{StaticResource ImageCardRadio}" GroupName="Game" Content="COD : MW3" Uid="mw3" Tag="pack://application:,,,/Assets/mw3.jpg"/>
+                <RadioButton Style="{StaticResource ImageCardRadio}" GroupName="Game" Content="COD : GHOSTS" Uid="ghosts" Tag="pack://application:,,,/Assets/ghosts.jpg"/>
+                <RadioButton Style="{StaticResource ImageCardRadio}" GroupName="Game" Content="COD : AW" Uid="aw" Tag="pack://application:,,,/Assets/aw.jpg"/>
+                <RadioButton Style="{StaticResource ImageCardRadio}" GroupName="Game" Content="COD : BO3" Uid="bo3" Tag="pack://application:,,,/Assets/BO3.jpg"/>
+                <RadioButton Style="{StaticResource ImageCardRadio}" GroupName="Game" Content="COD : MWR" Uid="mwr" Tag="pack://application:,,,/Assets/mwr.jpg"/>
+                <RadioButton Style="{StaticResource ImageCardRadio}" GroupName="Game" Content="COD : WW2" Uid="ww2" Tag="pack://application:,,,/Assets/ww2.jpg"/>
+                <RadioButton Style="{StaticResource ImageCardRadio}" GroupName="Game" Content="COD : MW2CR" Uid="mw2cr" Tag="pack://application:,,,/Assets/mw2cr.jpg"/>
+                <RadioButton Style="{StaticResource ImageCardRadio}" GroupName="Game" Content="COD : IW" Uid="iw" Tag="pack://application:,,,/Assets/iw.jpg"/>
+                <RadioButton Style="{StaticResource ImageCardRadio}" GroupName="Game" Content="COD : MW2019" Uid="mw2019" Tag="pack://application:,,,/Assets/mw2019.jpg"/>
+                <RadioButton Style="{StaticResource ImageCardRadio}" GroupName="Game" Content="COD : VANGUARD" Uid="vanguard" Tag="pack://application:,,,/Assets/vanguard.jpg"/>
+                <RadioButton Style="{StaticResource ImageCardRadio}" GroupName="Game" Content="COD : MW2 2022" Uid="mw22" Tag="pack://application:,,,/Assets/mw22.jpg"/>
+                <RadioButton Style="{StaticResource ImageCardRadio}" GroupName="Game" Content="COD : MW3 2023" Uid="mwiii" Tag="pack://application:,,,/Assets/mwiii.png"/>
+            </WrapPanel>
+
+            <TextBlock Text="SELECT MODE" Style="{StaticResource SectionHeader}"/>
+            <WrapPanel x:Name="ModePanel" RadioButton.Checked="OnGameSettingsChanged">
+                <RadioButton Style="{StaticResource ImageCardRadio}" GroupName="Mode" Content="SINGLEPLAYER" Uid="sp" Tag="pack://application:,,,/Assets/sp_logo.png"/>
+                <RadioButton Style="{StaticResource ImageCardRadio}" GroupName="Mode" Content="MULTIPLAYER" Uid="mp" Tag="pack://application:,,,/Assets/mp_logo.png"/>
+                <RadioButton Style="{StaticResource ImageCardRadio}" GroupName="Mode" Content="ZOMBIES" Uid="zm" Tag="pack://application:,,,/Assets/zm_logo.png"/>
+            </WrapPanel>
+
+            <TextBlock Text="SELECT CONSOLE" Style="{StaticResource SectionHeader}"/>
+            <WrapPanel x:Name="PlatformPanel" RadioButton.Checked="OnGameSettingsChanged">
+                <RadioButton Style="{StaticResource ImageCardRadio}" GroupName="Platform" Content="PS4" Uid="ps4" Tag="pack://application:,,,/Assets/ps4_logo.png"/>
+                <RadioButton Style="{StaticResource ImageCardRadio}" GroupName="Platform" Content="Xbox 360" Uid="xb" Tag="pack://application:,,,/Assets/xbox360.png"/>
+                <RadioButton Style="{StaticResource ImageCardRadio}" GroupName="Platform" Content="CCAPI" Uid="ccapi" Tag="pack://application:,,,/Assets/ccapi_logo.png"/>
+                <RadioButton Style="{StaticResource ImageCardRadio}" GroupName="Platform" Content="TMAPI" Uid="tmapi" Tag="pack://application:,,,/Assets/tmapi_logo.png"/>
+                <RadioButton Style="{StaticResource ImageCardRadio}" GroupName="Platform" Content="PS3MAPI" Uid="hen" Tag="pack://application:,,,/Assets/tmapi_logo.png"/>
+            </WrapPanel>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

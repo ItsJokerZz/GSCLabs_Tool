@@ -1,0 +1,754 @@
+﻿<Window x:Class="GSCLab.Views.PublishMenuWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Publish New Menu" Height="850" Width="820"
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+
+        <ControlTemplate x:Key="ComboBoxToggleButton" TargetType="ToggleButton">
+            <Border x:Name="templateRoot" Background="#0C0C0C" BorderBrush="#222" BorderThickness="1" CornerRadius="6">
+                <Path x:Name="arrow" Data="M 0,0 L 5,5 L 10,0" Stroke="#777" StrokeThickness="2" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,15,0"/>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="templateRoot" Property="BorderBrush" Value="#007ACC"/>
+                    <Setter TargetName="templateRoot" Property="Background" Value="#111"/>
+                    <Setter TargetName="arrow" Property="Stroke" Value="#007ACC"/>
+                </Trigger>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter TargetName="templateRoot" Property="BorderBrush" Value="#007ACC"/>
+                    <Setter TargetName="arrow" Property="Data" Value="M 0,5 L 5,0 L 10,5"/>
+                    <Setter TargetName="arrow" Property="Stroke" Value="#007ACC"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <Style TargetType="ComboBox">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="Padding" Value="15,0"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <ToggleButton x:Name="toggleButton" Template="{StaticResource ComboBoxToggleButton}" IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+                            <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" Content="{TemplateBinding SelectionBoxItem}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="{TemplateBinding Padding}" IsHitTestVisible="False"/>
+
+                            <Popup x:Name="PART_Popup" AllowsTransparency="True" IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}" Placement="Bottom" PopupAnimation="Slide">
+                                <Border x:Name="dropDownBorder" Background="#111" BorderBrush="#222" BorderThickness="1" CornerRadius="6" MinWidth="{TemplateBinding ActualWidth}" Margin="0,4,0,0">
+                                    <Border.Effect>
+                                        <DropShadowEffect Color="Black" BlurRadius="25" ShadowDepth="8" Opacity="0.6"/>
+                                    </Border.Effect>
+                                    <ScrollViewer x:Name="DropDownScrollViewer" VerticalScrollBarVisibility="Auto">
+                                        <ItemsPresenter x:Name="ItemsPresenter" KeyboardNavigation.DirectionalNavigation="Contained" Margin="5"/>
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="ComboBoxItem">
+            <Setter Property="Foreground" Value="#AAA"/>
+            <Setter Property="Padding" Value="12,10"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBoxItem">
+                        <Border x:Name="itemBorder" Background="Transparent" CornerRadius="4" Margin="0,0,0,2">
+                            <ContentPresenter Margin="{TemplateBinding Padding}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="itemBorder" Property="Background" Value="#181818"/>
+                                <Setter Property="Foreground" Value="#FFF"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="itemBorder" Property="Background" Value="#1A252F"/>
+                                <Setter Property="Foreground" Value="#007ACC"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="ScrollBar">
+            <Setter Property="Background" Value="#111"/>
+            <Setter Property="Width" Value="8"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Grid x:Name="Bg" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
+                            <Track x:Name="PART_Track" IsDirectionReversed="true" IsEnabled="{TemplateBinding IsMouseOver}">
+                                <Track.Thumb>
+                                    <Thumb x:Name="Thumb">
+                                        <Thumb.Template>
+                                            <ControlTemplate TargetType="Thumb">
+                                                <Border Background="#007ACC" CornerRadius="4" />
+                                            </ControlTemplate>
+                                        </Thumb.Template>
+                                    </Thumb>
+                                </Track.Thumb>
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="WinCloseBtn" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#777"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" x:Name="border" CornerRadius="0,8,0,0">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#C42B1C"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="PrimaryActionBtn" TargetType="Button">
+            <Setter Property="Background" Value="#007ACC"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="15,12"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="6">
+                            <ContentPresenter Margin="{TemplateBinding Padding}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#0086E6"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#005C99"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="#0C0C0C"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#222"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="12,10"/>
+            <Setter Property="CaretBrush" Value="#007ACC"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6" x:Name="border">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="0"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="#007ACC"/>
+                                <Setter TargetName="border" Property="Background" Value="#111"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="GameLogoAccordionStyle" TargetType="ToggleButton">
+            <Setter Property="Background" Value="#111"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border x:Name="bg" Background="{TemplateBinding Background}" BorderBrush="#222" BorderThickness="1" CornerRadius="8" Padding="15,12">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Border Grid.Column="0" Width="36" Height="36" Background="#0C0C0C" CornerRadius="6" BorderBrush="#222" BorderThickness="1">
+                                    <Image Source="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Stretch="Uniform" Margin="4" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                </Border>
+
+                                <TextBlock Grid.Column="1" Text="{TemplateBinding Content}" Foreground="White" FontSize="14" FontWeight="Bold" VerticalAlignment="Center" Margin="15,0,0,0"/>
+
+                                <Path x:Name="chevron" Grid.Column="2" Data="M 0 0 L 5 5 L 10 0" Stroke="#777" StrokeThickness="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,5,0" StrokeEndLineCap="Round" StrokeStartLineCap="Round" StrokeLineJoin="Round"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bg" Property="Background" Value="#181818"/>
+                                <Setter TargetName="bg" Property="BorderBrush" Value="#333"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="bg" Property="BorderBrush" Value="#007ACC"/>
+                                <Setter TargetName="bg" Property="Background" Value="#1A252F"/>
+                                <Setter TargetName="chevron" Property="Data" Value="M 0 5 L 5 0 L 10 5"/>
+                                <Setter TargetName="chevron" Property="Stroke" Value="#007ACC"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SmallPillToggleStyle" TargetType="CheckBox">
+            <Setter Property="Background" Value="#111"/>
+            <Setter Property="Foreground" Value="#777"/>
+            <Setter Property="BorderBrush" Value="#222"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="12,6"/>
+            <Setter Property="Margin" Value="0,0,8,8"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <Border x:Name="PillBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="12">
+                            <ContentPresenter Margin="{TemplateBinding Padding}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="PillBorder" Property="Background" Value="#181818"/>
+                                <Setter Property="Foreground" Value="#AAA"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="PillBorder" Property="Background" Value="#007ACC"/>
+                                <Setter TargetName="PillBorder" Property="BorderBrush" Value="#007ACC"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Window.Resources>
+
+    <Grid Margin="15">
+        <Border Background="#0C0C0C" CornerRadius="8" BorderBrush="#222" BorderThickness="1">
+            <Border.Effect>
+                <DropShadowEffect Color="Black" BlurRadius="25" ShadowDepth="8" Opacity="0.6"/>
+            </Border.Effect>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="45"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0" Background="#111" CornerRadius="8,8,0,0" BorderBrush="#1A1A1A" BorderThickness="0,0,0,1" MouseLeftButtonDown="DragBar_MouseDown">
+                    <Grid>
+                        <DockPanel Margin="15,0,0,0" VerticalAlignment="Center">
+                            <Ellipse Width="8" Height="8" Fill="#007ACC" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <TextBlock Text="PUBLISH TO GSC MARKET" Foreground="White" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"/>
+                        </DockPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button Content="✕" Style="{StaticResource WinCloseBtn}" Width="45" Name="CloseButton" Click="CloseButton_Click"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <Border Padding="35">
+                        <StackPanel>
+
+                            <TextBlock Text="Publish New Menu" Foreground="#FFF" FontWeight="Black" FontSize="26" Margin="0,0,0,5"/>
+                            <TextBlock Text="Fill out the details below to deploy your menu to the global GSCLab Marketplace." Foreground="#666" FontSize="13" Margin="0,0,0,30"/>
+
+                            <Border Background="#111" BorderBrush="#1A1A1A" BorderThickness="1" CornerRadius="8" Padding="25">
+                                <StackPanel>
+
+                                    <Grid Margin="0,0,0,25">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="20"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="20"/>
+                                            <ColumnDefinition Width="120"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="MENU / BUNDLE NAME" Foreground="#666" FontSize="10" Margin="0,0,0,8" FontWeight="Bold"/>
+                                            <TextBox x:Name="MenuNameInput" Height="42" VerticalContentAlignment="Center"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="2">
+                                            <TextBlock Text="AUTHOR" Foreground="#666" FontSize="10" Margin="0,0,0,8" FontWeight="Bold"/>
+                                            <TextBox x:Name="AuthorInput" Height="42" VerticalContentAlignment="Center" IsReadOnly="True"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="4">
+                                            <TextBlock Text="VERSION" Foreground="#666" FontSize="10" Margin="0,0,0,8" FontWeight="Bold"/>
+                                            <TextBox x:Name="VersionInput" Text="1.0.0" Height="42" VerticalContentAlignment="Center" Foreground="#007ACC" FontWeight="Bold" HorizontalContentAlignment="Center"/>
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <TextBlock Text="SUPPORTED GAMES &amp; PLATFORMS" Foreground="#666" FontSize="10" FontWeight="Bold" Margin="0,0,0,10"/>
+                                    <StackPanel Margin="0,0,0,25">
+
+                                        <StackPanel Margin="0,0,0,10">
+                                            <ToggleButton x:Name="ChkMW3" Content="Modern Warfare 3" Tag="pack://application:,,,/Assets/mw3_logo.png" Style="{StaticResource GameLogoAccordionStyle}"/>
+                                            <Border Background="#0C0C0C" BorderBrush="#222" BorderThickness="1,0,1,1" CornerRadius="0,0,8,8" Margin="0,-4,0,0" Padding="20">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsChecked, ElementName=ChkMW3}" Value="True">
+                                                                <Setter Property="Visibility" Value="Visible"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="200"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <StackPanel Grid.Column="0">
+                                                        <TextBlock Text="MODES" Foreground="#555" FontSize="9" FontWeight="Bold" Margin="0,0,0,10"/>
+                                                        <WrapPanel>
+                                                            <CheckBox Content="MP" Style="{StaticResource SmallPillToggleStyle}"/>
+                                                            <CheckBox Content="SP" Style="{StaticResource SmallPillToggleStyle}"/>
+                                                            <CheckBox Content="SO" Style="{StaticResource SmallPillToggleStyle}"/>
+                                                        </WrapPanel>
+                                                    </StackPanel>
+                                                    <StackPanel Grid.Column="1">
+                                                        <TextBlock Text="CONSOLES" Foreground="#555" FontSize="9" FontWeight="Bold" Margin="0,0,0,10"/>
+                                                        <WrapPanel>
+                                                            <CheckBox Content="PS3" Style="{StaticResource SmallPillToggleStyle}"/>
+                                                        </WrapPanel>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Border>
+                                        </StackPanel>
+
+                                        <StackPanel Margin="0,0,0,10">
+                                            <ToggleButton x:Name="ChkGhosts" Content="Ghosts" Tag="pack://application:,,,/Assets/gho_logo.png" Style="{StaticResource GameLogoAccordionStyle}"/>
+                                            <Border Background="#0C0C0C" BorderBrush="#222" BorderThickness="1,0,1,1" CornerRadius="0,0,8,8" Margin="0,-4,0,0" Padding="20">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsChecked, ElementName=ChkGhosts}" Value="True">
+                                                                <Setter Property="Visibility" Value="Visible"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="200"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <StackPanel Grid.Column="0">
+                                                        <TextBlock Text="MODES" Foreground="#555" FontSize="9" FontWeight="Bold" Margin="0,0,0,10"/>
+                                                        <WrapPanel>
+                                                            <CheckBox Content="MP" Style="{StaticResource SmallPillToggleStyle}"/>
+                                                            <CheckBox Content="EX" Style="{StaticResource SmallPillToggleStyle}"/>
+                                                            <CheckBox Content="SP" Style="{StaticResource SmallPillToggleStyle}"/>
+                                                        </WrapPanel>
+                                                    </StackPanel>
+                                                    <StackPanel Grid.Column="1">
+                                                        <TextBlock Text="CONSOLES" Foreground="#555" FontSize="9" FontWeight="Bold" Margin="0,0,0,10"/>
+                                                        <WrapPanel>
+                                                            <CheckBox Content="PS3" Style="{StaticResource SmallPillToggleStyle}"/>
+                                                            <CheckBox Content="PS4" Style="{StaticResource SmallPillToggleStyle}"/>
+                                                            <CheckBox Content="PS5" Style="{StaticResource SmallPillToggleStyle}"/>
+                                                        </WrapPanel>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Border>
+                                        </StackPanel>
+
+                                        <StackPanel Margin="0,0,0,10">
+                                            <ToggleButton x:Name="ChkAW" Content="Advanced Warfare" Tag="pack://application:,,,/Assets/aw_logo.png" Style="{StaticResource GameLogoAccordionStyle}"/>
+                                            <Border Background="#0C0C0C" BorderBrush="#222" BorderThickness="1,0,1,1" CornerRadius="0,0,8,8" Margin="0,-4,0,0" Padding="20">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsChecked, ElementName=ChkAW}" Value="True">
+                                                                <Setter Property="Visibility" Value="Visible"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="200"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <StackPanel Grid.Column="0">
+                                                        <TextBlock Text="MODES" Foreground="#555" FontSize="9" FontWeight="Bold" Margin="0,0,0,10"/>
+                                                        <WrapPanel>
+                                                            <CheckBox Content="SP" Style="{StaticResource SmallPillToggleStyle}"/>
+                                                            <CheckBox Content="MP" Style="{StaticResource SmallPillToggleStyle}"/>
+                                                            <CheckBox Content="ES" Style="{StaticResource SmallPillToggleStyle}"/>
+                                                            <CheckBox Content="EZ" Style="{StaticResource SmallPillToggleStyle}"/>
+                                                        </WrapPanel>
+                                                    </StackPanel>
+                                                    <StackPanel Grid.Column="1">
+                                                        <TextBlock Text="CONSOLES" Foreground="#555" FontSize="9" FontWeight="Bold" Margin="0,0,0,10"/>
+                                                        <WrapPanel>
+                                                            <CheckBox Content="PS3" Style="{StaticResource SmallPillToggleStyle}"/>
+                                                            <CheckBox Content="PS4" Style="{StaticResource SmallPillToggleStyle}"/>
+                                                            <CheckBox Content="PS5" Style="{StaticResource SmallPillToggleStyle}"/>
+                                                        </WrapPanel>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Border>
+                                        </StackPanel>
+
+                                        <StackPanel Margin="0,0,0,10">
+                                            <ToggleButton x:Name="ChkMWR" Content="Modern Warfare Remastered" Tag="pack://application:,,,/Assets/mwr_logo.png" Style="{StaticResource GameLogoAccordionStyle}"/>
+                                            <Border Background="#0C0C0C" BorderBrush="#222" BorderThickness="1,0,1,1" CornerRadius="0,0,8,8" Margin="0,-4,0,0" Padding="20">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsChecked, ElementName=ChkMWR}" Value="True">
+                                                                <Setter Property="Visibility" Value="Visible"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="200"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <StackPanel Grid.Column="0">
+                                                        <TextBlock Text="MODES" Foreground="#555" FontSize="9" FontWeight="Bold" Margin="0,0,0,10"/>
+                                                        <WrapPanel>
+                                                            <CheckBox Content="SP" Style="{StaticResource SmallPillToggleStyle}"/>
+                                                            <CheckBox Content="MP" Style="{StaticResource SmallPillToggleStyle}"/>
+                                                        </WrapPanel>
+                                                    </StackPanel>
+                                                    <StackPanel Grid.Column="1">
+                                                        <TextBlock Text="CONSOLES" Foreground="#555" FontSize="9" FontWeight="Bold" Margin="0,0,0,10"/>
+                                                        <WrapPanel>
+                                                            <CheckBox Content="PS4" Style="{StaticResource SmallPillToggleStyle}"/>
+                                                            <CheckBox Content="PS5" Style="{StaticResource SmallPillToggleStyle}"/>
+                                                        </WrapPanel>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Border>
+                                        </StackPanel>
+
+                                        <StackPanel Margin="0,0,0,10">
+                                            <ToggleButton x:Name="ChkMW2CR" Content="Modern Warfare 2 Campaign Remastered" Tag="pack://application:,,,/Assets/mw2cr_logo.png" Style="{StaticResource GameLogoAccordionStyle}"/>
+                                            <Border Background="#0C0C0C" BorderBrush="#222" BorderThickness="1,0,1,1" CornerRadius="0,0,8,8" Margin="0,-4,0,0" Padding="20">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsChecked, ElementName=ChkMW2CR}" Value="True">
+                                                                <Setter Property="Visibility" Value="Visible"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="200"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <StackPanel Grid.Column="0">
+                                                        <TextBlock Text="MODES" Foreground="#555" FontSize="9" FontWeight="Bold" Margin="0,0,0,10"/>
+                                                        <WrapPanel>
+                                                            <CheckBox Content="SP" Style="{StaticResource SmallPillToggleStyle}"/>
+                                                        </WrapPanel>
+                                                    </StackPanel>
+                                                    <StackPanel Grid.Column="1">
+                                                        <TextBlock Text="CONSOLES" Foreground="#555" FontSize="9" FontWeight="Bold" Margin="0,0,0,10"/>
+                                                        <WrapPanel>
+                                                            <CheckBox Content="PS4" Style="{StaticResource SmallPillToggleStyle}"/>
+                                                            <CheckBox Content="PS5" Style="{StaticResource SmallPillToggleStyle}"/>
+                                                        </WrapPanel>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Border>
+                                        </StackPanel>
+
+                                        <StackPanel Margin="0,0,0,10">
+                                            <ToggleButton x:Name="ChkWW2" Content="World War II" Tag="pack://application:,,,/Assets/ww2_logo.png" Style="{StaticResource GameLogoAccordionStyle}"/>
+                                            <Border Background="#0C0C0C" BorderBrush="#222" BorderThickness="1,0,1,1" CornerRadius="0,0,8,8" Margin="0,-4,0,0" Padding="20">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsChecked, ElementName=ChkWW2}" Value="True">
+                                                                <Setter Property="Visibility" Value="Visible"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="200"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <StackPanel Grid.Column="0">
+                                                        <TextBlock Text="MODES" Foreground="#555" FontSize="9" FontWeight="Bold" Margin="0,0,0,10"/>
+                                                        <WrapPanel>
+                                                            <CheckBox Content="MP" Style="{StaticResource SmallPillToggleStyle}"/>
+                                                            <CheckBox Content="ZM" Style="{StaticResource SmallPillToggleStyle}"/>
+                                                        </WrapPanel>
+                                                    </StackPanel>
+                                                    <StackPanel Grid.Column="1">
+                                                        <TextBlock Text="CONSOLES" Foreground="#555" FontSize="9" FontWeight="Bold" Margin="0,0,0,10"/>
+                                                        <WrapPanel>
+                                                            <CheckBox Content="PS4" Style="{StaticResource SmallPillToggleStyle}"/>
+                                                            <CheckBox Content="PS5" Style="{StaticResource SmallPillToggleStyle}"/>
+                                                        </WrapPanel>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Border>
+                                        </StackPanel>
+
+                                        <StackPanel Margin="0,0,0,10">
+                                            <ToggleButton x:Name="ChkIW" Content="Infinite Warfare" Tag="pack://application:,,,/Assets/iw_logo.png" Style="{StaticResource GameLogoAccordionStyle}"/>
+                                            <Border Background="#0C0C0C" BorderBrush="#222" BorderThickness="1,0,1,1" CornerRadius="0,0,8,8" Margin="0,-4,0,0" Padding="20">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsChecked, ElementName=ChkIW}" Value="True">
+                                                                <Setter Property="Visibility" Value="Visible"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="200"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <StackPanel Grid.Column="0">
+                                                        <TextBlock Text="MODES" Foreground="#555" FontSize="9" FontWeight="Bold" Margin="0,0,0,10"/>
+                                                        <WrapPanel>
+                                                            <CheckBox Content="MP" Style="{StaticResource SmallPillToggleStyle}"/>
+                                                            <CheckBox Content="ZM" Style="{StaticResource SmallPillToggleStyle}"/>
+                                                        </WrapPanel>
+                                                    </StackPanel>
+                                                    <StackPanel Grid.Column="1">
+                                                        <TextBlock Text="CONSOLES" Foreground="#555" FontSize="9" FontWeight="Bold" Margin="0,0,0,10"/>
+                                                        <WrapPanel>
+                                                            <CheckBox Content="PS4" Style="{StaticResource SmallPillToggleStyle}"/>
+                                                            <CheckBox Content="PS5" Style="{StaticResource SmallPillToggleStyle}"/>
+                                                        </WrapPanel>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Border>
+                                        </StackPanel>
+
+                                        <StackPanel Margin="0,0,0,10">
+                                            <ToggleButton x:Name="ChkVG" Content="Vanguard" Tag="pack://application:,,,/Assets/vg_logo.png" Style="{StaticResource GameLogoAccordionStyle}"/>
+                                            <Border Background="#0C0C0C" BorderBrush="#222" BorderThickness="1,0,1,1" CornerRadius="0,0,8,8" Margin="0,-4,0,0" Padding="20">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsChecked, ElementName=ChkVG}" Value="True">
+                                                                <Setter Property="Visibility" Value="Visible"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="200"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <StackPanel Grid.Column="0">
+                                                        <TextBlock Text="MODES" Foreground="#555" FontSize="9" FontWeight="Bold" Margin="0,0,0,10"/>
+                                                        <WrapPanel>
+                                                            <CheckBox Content="MP" Style="{StaticResource SmallPillToggleStyle}"/>
+                                                            <CheckBox Content="ZM" Style="{StaticResource SmallPillToggleStyle}"/>
+                                                        </WrapPanel>
+                                                    </StackPanel>
+                                                    <StackPanel Grid.Column="1">
+                                                        <TextBlock Text="CONSOLES" Foreground="#555" FontSize="9" FontWeight="Bold" Margin="0,0,0,10"/>
+                                                        <WrapPanel>
+                                                            <CheckBox Content="PS4" Style="{StaticResource SmallPillToggleStyle}"/>
+                                                            <CheckBox Content="PS5" Style="{StaticResource SmallPillToggleStyle}"/>
+                                                        </WrapPanel>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Border>
+                                        </StackPanel>
+
+                                        <StackPanel Margin="0,0,0,10">
+                                            <ToggleButton x:Name="ChkMW2019" Content="MW2019" Tag="pack://application:,,,/Assets/mw2019_logo.png" Style="{StaticResource GameLogoAccordionStyle}"/>
+                                            <Border Background="#0C0C0C" BorderBrush="#222" BorderThickness="1,0,1,1" CornerRadius="0,0,8,8" Margin="0,-4,0,0" Padding="20">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsChecked, ElementName=ChkMW2019}" Value="True">
+                                                                <Setter Property="Visibility" Value="Visible"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="200"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <StackPanel Grid.Column="0">
+                                                        <TextBlock Text="MODES" Foreground="#555" FontSize="9" FontWeight="Bold" Margin="0,0,0,10"/>
+                                                        <WrapPanel>
+                                                            <CheckBox Content="MP" Style="{StaticResource SmallPillToggleStyle}"/>
+                                                            <CheckBox Content="SP" Style="{StaticResource SmallPillToggleStyle}"/>
+                                                        </WrapPanel>
+                                                    </StackPanel>
+                                                    <StackPanel Grid.Column="1">
+                                                        <TextBlock Text="CONSOLES" Foreground="#555" FontSize="9" FontWeight="Bold" Margin="0,0,0,10"/>
+                                                        <WrapPanel>
+                                                            <CheckBox Content="PS4" Style="{StaticResource SmallPillToggleStyle}"/>
+                                                            <CheckBox Content="PS5" Style="{StaticResource SmallPillToggleStyle}"/>
+                                                        </WrapPanel>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Border>
+                                        </StackPanel>
+
+                                        <StackPanel Margin="0,0,0,10">
+                                            <ToggleButton x:Name="ChkMW22" Content="MW2 2022" Tag="pack://application:,,,/Assets/mwii_logo.png" Style="{StaticResource GameLogoAccordionStyle}"/>
+                                            <Border Background="#0C0C0C" BorderBrush="#222" BorderThickness="1,0,1,1" CornerRadius="0,0,8,8" Margin="0,-4,0,0" Padding="20">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsChecked, ElementName=ChkMW22}" Value="True">
+                                                                <Setter Property="Visibility" Value="Visible"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="200"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <StackPanel Grid.Column="0">
+                                                        <TextBlock Text="MODES" Foreground="#555" FontSize="9" FontWeight="Bold" Margin="0,0,0,10"/>
+                                                        <WrapPanel>
+                                                            <CheckBox Content="MP" Style="{StaticResource SmallPillToggleStyle}"/>
+                                                        </WrapPanel>
+                                                    </StackPanel>
+                                                    <StackPanel Grid.Column="1">
+                                                        <TextBlock Text="CONSOLES" Foreground="#555" FontSize="9" FontWeight="Bold" Margin="0,0,0,10"/>
+                                                        <WrapPanel>
+                                                            <CheckBox Content="PS4" Style="{StaticResource SmallPillToggleStyle}"/>
+                                                            <CheckBox Content="PS5" Style="{StaticResource SmallPillToggleStyle}"/>
+                                                        </WrapPanel>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Border>
+                                        </StackPanel>
+
+                                    </StackPanel>
+
+                                    <Grid Margin="0,0,0,25">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="20"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="20"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="PRICING MODEL" Foreground="#666" FontSize="10" Margin="0,0,0,8" FontWeight="Bold"/>
+                                            <ComboBox x:Name="PricingTypeCombo">
+                                                <ComboBoxItem Content="Free Menu" IsSelected="True"/>
+                                                <ComboBoxItem Content="Paid Menu"/>
+                                            </ComboBox>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="2">
+                                            <TextBlock Text="PRICE (USD)" Foreground="#666" FontSize="10" Margin="0,0,0,8" FontWeight="Bold"/>
+                                            <TextBox x:Name="PriceInput" Height="42" VerticalContentAlignment="Center" Foreground="#28A745" FontWeight="Bold"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="4">
+                                            <TextBlock Text="COUPON CODE" Foreground="#666" FontSize="10" Margin="0,0,0,8" FontWeight="Bold"/>
+                                            <TextBox x:Name="CouponCodeInput" Height="42" VerticalContentAlignment="Center" Foreground="#007ACC" FontWeight="Bold"/>
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <TextBlock Text="DESCRIPTION &amp; FEATURES" Foreground="#666" FontSize="10" Margin="0,0,0,8" FontWeight="Bold"/>
+                                    <TextBox x:Name="MenuDescInput" Height="100" TextWrapping="Wrap" AcceptsReturn="True" Margin="0,0,0,25"/>
+
+                                    <TextBlock Text="CHANGELOG (WHAT'S NEW)" Foreground="#666" FontSize="10" Margin="0,0,0,8" FontWeight="Bold"/>
+                                    <TextBox x:Name="ChangelogInput" Height="80" TextWrapping="Wrap" AcceptsReturn="True" Margin="0,0,0,25"/>
+
+                                    <TextBlock Text="YOUTUBE SHOWCASE LINK" Foreground="#666" FontSize="10" Margin="0,0,0,8" FontWeight="Bold"/>
+                                    <TextBox x:Name="YoutubeLinkInput" Height="42" VerticalContentAlignment="Center" Foreground="#FF4444" FontWeight="SemiBold" Margin="0,0,0,25"/>
+
+                                    <Border BorderBrush="#1A1A1A" BorderThickness="0,1,0,0" Margin="-25,0,-25,25"/>
+
+                                    <TextBlock Text="MEDIA &amp; SCRIPT FILES" Foreground="#666" FontSize="10" Margin="0,0,0,15" FontWeight="Bold"/>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="20"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Grid Grid.Column="0">
+                                            <Rectangle Stroke="#222" StrokeThickness="2" StrokeDashArray="4 4" RadiusX="8" RadiusY="8"/>
+                                            <Border Background="Transparent" Cursor="Hand" Padding="20" MouseLeftButtonDown="SelectImgBtn_Click">
+                                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False">
+                                                    <TextBlock Text="🖼️" FontSize="28" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                                                    <TextBlock Text="Upload Cover Image" Foreground="#CCC" FontWeight="Bold" FontSize="13" HorizontalAlignment="Center"/>
+                                                    <TextBlock x:Name="SelectedImageNameText" Text="Click to browse .png or .jpg" Foreground="#555" FontSize="11" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                                                </StackPanel>
+                                            </Border>
+                                        </Grid>
+
+                                        <Grid Grid.Column="2">
+                                            <Rectangle Stroke="#222" StrokeThickness="2" StrokeDashArray="4 4" RadiusX="8" RadiusY="8"/>
+                                            <Border Background="Transparent" Cursor="Hand" Padding="20" MouseLeftButtonDown="SelectFolderBtn_Click">
+                                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False">
+                                                    <TextBlock Text="📁" FontSize="28" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                                                    <TextBlock Text="Select Project Folder" Foreground="#CCC" FontWeight="Bold" FontSize="13" HorizontalAlignment="Center"/>
+                                                    <TextBlock x:Name="SelectedFolderNameText" Text="Click to browse for GSC folder" Foreground="#555" FontSize="11" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                                                </StackPanel>
+                                            </Border>
+                                        </Grid>
+                                    </Grid>
+
+                                </StackPanel>
+                            </Border>
+
+                            <Button Content="🚀 PUBLISH TO MARKETPLACE" Style="{StaticResource PrimaryActionBtn}" Height="50" FontSize="15" FontWeight="Black" Margin="0,25,0,0" x:Name="SubmitMenuBtn" Click="SubmitMenuBtn_Click"/>
+
+                        </StackPanel>
+                    </Border>
+                </ScrollViewer>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
